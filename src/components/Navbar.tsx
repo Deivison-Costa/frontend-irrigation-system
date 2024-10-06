@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { FaGithub, FaEnvelope } from 'react-icons/fa';
 
 const Navbar: React.FC = () => {
   return (
@@ -7,12 +8,13 @@ const Navbar: React.FC = () => {
         <Link href="/" className="text-white font-bold text-xl">
           Sistema de Irrigação
         </Link>
-        <div>
-          <Link href="/" className="text-white mx-2">
-            Home
-          </Link>
-          <Link href="https://github.com/Deivison-Costa" className="text-white mx-2">
-            GitHub
+        <div className="flex items-center">
+          <a href="mailto:deivisonbambui@gmail.com" className="text-white mx-2 flex items-center">
+            <FaEnvelope className="mr-1" /> Contatos
+          </a>
+          
+          <Link href="https://github.com/Deivison-Costa" className="text-white mx-2 flex items-center">
+            <FaGithub className="mr-1" /> GitHub
           </Link>
         </div>
       </div>
