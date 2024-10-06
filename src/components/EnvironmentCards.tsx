@@ -2,41 +2,55 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { z } from "zod";
 
-interface SensorData {
-  temperature: number;
-  humidity: number;
-  windSpeed: number;
-  pressure: number;
-  luminosity: number;
-  soilMoisture: number;
-  ETo: number;
-  TmaxC: number;
-  TminC: number;
-  Tmean: number;
-  Rs: number;
-  Rns: number;
-  Ra: number;
-  Rso: number;
-  Rnl: number;
-  Rn: number;
-  delta: number;
-  gamma: number;
-  es: number;
-  ea: number;
-}
+const SensorDataSchema = z.object({
+  temperature: z.number(),
+  humidity: z.number(),
+  windSpeed: z.number(),
+  pressure: z.number(),
+  luminosity: z.number(),
+  soilMoisture: z.number(),
+  ETo: z.number(),
+  TmaxC: z.number(),
+  TminC: z.number(),
+  Tmean: z.number(),
+  Rs: z.number(),
+  Rns: z.number(),
+  Ra: z.number(),
+  Rso: z.number(),
+  Rnl: z.number(),
+  Rn: z.number(),
+  delta: z.number(),
+  gamma: z.number(),
+  es: z.number(),
+  ea: z.number(),
+});
+
+type SensorData = z.infer<typeof SensorDataSchema>;
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const EnvironmentCards: React.FC = () => {
   const [data, setData] = useState<SensorData | null>(null);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get<SensorData>(`${backendUrl}/sensors`);
-      setData(response.data);
+      const response = await axios.get(`${backendUrl}/sensors`);
+      
+      const parsedData = SensorDataSchema.safeParse(response.data);
+      
+      if (parsedData.success) {
+        setData(parsedData.data);
+        setValidationError(null);
+      } else {
+        console.error("Falha na validação dos dados dos sensores:", parsedData.error);
+        setValidationError("Dados dos sensores inválidos.");
+      }
     } catch (error) {
       console.error("Erro ao buscar dados dos sensores:", error);
+      setValidationError("Erro ao buscar dados dos sensores.");
     }
   };
 
@@ -45,6 +59,10 @@ const EnvironmentCards: React.FC = () => {
     const interval = setInterval(fetchData, 5000);
     return () => clearInterval(interval);
   }, []);
+
+  if (validationError) {
+    return <div className="text-red-500">{validationError}</div>;
+  }
 
   if (!data) return <div>Carregando...</div>;
 

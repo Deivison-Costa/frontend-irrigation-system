@@ -2,24 +2,42 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { z } from 'zod';
 
-interface ErrorItem {
-  id: number;
-  message: string;
-  timestamp: string;
-}
+const ErrorItemSchema = z.object({
+  id: z.number(),
+  message: z.string(),
+  timestamp: z.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: "Timestamp inválido",
+  }),
+});
+
+const ErrorListSchema = z.array(ErrorItemSchema);
+
+type ErrorItem = z.infer<typeof ErrorItemSchema>;
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const ErrorTable: React.FC = () => {
   const [errors, setErrors] = useState<ErrorItem[]>([]);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   const fetchErrors = async () => {
     try {
-      const response = await axios.get<ErrorItem[]>(`${backendUrl}/errors`);
-      setErrors(response.data);
+      const response = await axios.get(`${backendUrl}/errors`);
+      
+      const parsedErrors = ErrorListSchema.safeParse(response.data);
+      
+      if (parsedErrors.success) {
+        setErrors(parsedErrors.data);
+        setValidationError(null);
+      } else {
+        console.error("Falha na validação dos erros:", parsedErrors.error);
+        setValidationError("Dados de erros inválidos.");
+      }
     } catch (error) {
       console.error("Erro ao buscar erros:", error);
+      setValidationError("Erro ao buscar erros.");
     }
   };
 
@@ -32,6 +50,9 @@ const ErrorTable: React.FC = () => {
   return (
     <div className="container mx-auto mt-8">
       <h2 className="text-2xl font-bold mb-4">Lista de Erros</h2>
+      {validationError && (
+        <div className="text-red-500 mb-4">{validationError}</div>
+      )}
       <table className="min-w-full bg-white">
         <thead>
           <tr>
