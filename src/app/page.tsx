@@ -1,4 +1,4 @@
-import EnvironmentCarousel from '@/components/EnvironmentCarousel';
+import EnvironmentCarousel from '@/components/EnvironmentCards';
 import ErrorTable from '@/components/ErrorTable';
 
 const Home: React.FC = () => {
