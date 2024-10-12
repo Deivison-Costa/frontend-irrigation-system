@@ -406,7 +406,12 @@ export default function EnvironmentCards() {
           <CardHeader className="relative p-0">
             <div
               className="absolute inset-0 bg-cover bg-center opacity-30"
-              style={{ backgroundImage: `url(${getBackgroundImage(key)})` }}
+              style={{
+                backgroundImage: `url(${getBackgroundImage(key)})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'right'
+              }}
             />
             <div className="relative p-6">
               <CardTitle className="text-xl font-bold">

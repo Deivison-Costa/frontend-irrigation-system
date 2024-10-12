@@ -27,18 +27,18 @@ export default function Navbar() {
               className="transition-all duration-300 group-hover:invert"
             />
           </div>
-          IrrigaSync
+          <span className="transition-all duration-300 group-hover:invert">IrrigaSync</span>
         </Link>
         <div className="hidden md:flex items-center space-x-4">
           <NavItem href="/" label="Home" icon={<Home className="mr-2 h-4 w-4" />} />
           <a href="mailto:deivisonbambui@gmail.com">
-            <Button variant="ghost" size="sm" className="text-white hover:text-emerald-200 hover:bg-emerald-700/20">
+            <Button variant="link" size="sm" className="text-white hover:text-emerald-200 hover:bg-emerald-700/20">
               <Mail className="mr-2 h-4 w-4" />
               Contato
             </Button>
           </a>          
           <a href="https://github.com/Deivison-Costa" target="_blank" rel="noopener noreferrer">
-            <Button variant="ghost" size="sm" className="text-white hover:text-emerald-200 hover:bg-emerald-700/20">
+            <Button variant="link" size="sm" className="text-white hover:text-emerald-200 hover:bg-emerald-700/20">
               <Github className="mr-2 h-4 w-4" />
               GitHub
             </Button>
