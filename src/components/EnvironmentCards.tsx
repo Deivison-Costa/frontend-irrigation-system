@@ -402,14 +402,16 @@ export default function EnvironmentCards() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
       {variables.map(([key, value]) => (
-        <Card key={key} className="w-full overflow-hidden bg-gradient-to-r from-emerald-500 to-teal-500 text-white">
+        <Card key={key} className="w-full overflow-hidden bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-0">
           <CardHeader className="relative p-0">
             <div
               className="absolute inset-0 bg-cover bg-center opacity-30"
               style={{ backgroundImage: `url(${getBackgroundImage(key)})` }}
             />
             <div className="relative p-6">
-              <CardTitle className="text-xl font-bold">{titlesInPortuguese[key] || key}</CardTitle>
+              <CardTitle className="text-xl font-bold">
+                {titlesInPortuguese[key] || key}
+              </CardTitle>
               <CardDescription className="text-white/80">
               </CardDescription>
             </div>
@@ -427,5 +429,5 @@ export default function EnvironmentCards() {
         </Card>
       ))}
     </div>
-  )
+  )  
 }

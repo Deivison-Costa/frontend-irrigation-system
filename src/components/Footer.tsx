@@ -15,9 +15,7 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-2">Links rápidos</h3>
             <ul className="space-y-2">
               <li><Link href="/" className="text-sm hover:text-emerald-200 transition-colors duration-200">Home</Link></li>
-              <li><Link href="/about" className="text-sm hover:text-emerald-200 transition-colors duration-200">Sobre</Link></li>
-              <li><Link href="/services" className="text-sm hover:text-emerald-200 transition-colors duration-200">Serviços</Link></li>
-              <li><Link href="/contact" className="text-sm hover:text-emerald-200 transition-colors duration-200">Contato</Link></li>
+              <li><Link href="mailto:deivisonbambui@gmail.com" className="text-sm hover:text-emerald-200 transition-colors duration-200">Contato</Link></li>
             </ul>
           </div>
           <div className="text-white">

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { Github, Mail, Menu } from "lucide-react"
+import { Github, Mail, Menu, Home } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -20,17 +20,19 @@ export default function Navbar() {
           IrrigaSync
         </Link>
         <div className="hidden md:flex items-center space-x-4">
-          <NavItem href="/" label="Home" />
-          <NavItem href="/about" label="Sobre" />
-          <NavItem href="/services" label="Serviços" />
-          <Button variant="ghost" size="sm" className="text-white hover:text-emerald-200 hover:bg-emerald-700/20">
-            <Mail className="mr-2 h-4 w-4" />
-            Contato
-          </Button>
-          <Button variant="ghost" size="sm" className="text-white hover:text-emerald-200 hover:bg-emerald-700/20">
-            <Github className="mr-2 h-4 w-4" />
-            GitHub
-          </Button>
+          <NavItem href="/" label="Home" icon={<Home className="mr-2 h-4 w-4" />} />
+          <a href="mailto:deivisonbambui@gmail.com">
+            <Button variant="ghost" size="sm" className="text-white hover:text-emerald-200 hover:bg-emerald-700/20">
+              <Mail className="mr-2 h-4 w-4" />
+              Contato
+            </Button>
+          </a>          
+          <a href="https://github.com/Deivison-Costa" target="_blank" rel="noopener noreferrer">
+            <Button variant="ghost" size="sm" className="text-white hover:text-emerald-200 hover:bg-emerald-700/20">
+              <Github className="mr-2 h-4 w-4" />
+              GitHub
+            </Button>
+          </a>
         </div>
         <div className="md:hidden">
           <DropdownMenu>
@@ -41,13 +43,10 @@ export default function Navbar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48 bg-emerald-500">
               <DropdownMenuItem>
-                <Link href="/" className="flex w-full items-center">Home</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="/about" className="flex w-full items-center">Sobre</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="/services" className="flex w-full items-center">Serviços</Link>
+                <Link href="/" className="flex w-full items-center">
+                  <Home className="mr-2 h-4 w-4" />
+                  Home
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <a href="mailto:deivisonbambui@gmail.com" className="flex w-full items-center">
@@ -69,12 +68,13 @@ export default function Navbar() {
   )
 }
 
-function NavItem({ href, label }: { href: string; label: string }) {
+function NavItem({ href, label, icon }: { href: string; label: string; icon?: React.ReactNode }) {
   return (
     <Link
       href={href}
-      className="text-white hover:text-emerald-200 px-3 py-2 rounded-md text-sm font-medium hover:bg-emerald-700/20 transition-colors duration-200"
+      className="text-white hover:text-emerald-200 px-3 py-2 rounded-md text-sm font-medium hover:bg-emerald-700/20 transition-colors duration-200 flex items-center"
     >
+      {icon}
       {label}
     </Link>
   )
