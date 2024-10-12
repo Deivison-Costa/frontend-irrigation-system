@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { z } from "zod"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -410,15 +410,13 @@ export default function EnvironmentCards() {
                 backgroundImage: `url(${getBackgroundImage(key)})`,
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'right'
+                backgroundPosition: 'right',
               }}
             />
             <div className="relative p-6">
               <CardTitle className="text-xl font-bold">
                 {titlesInPortuguese[key] || key}
               </CardTitle>
-              <CardDescription className="text-white/80">
-              </CardDescription>
             </div>
           </CardHeader>
           <CardContent className="pt-4">
