@@ -290,15 +290,15 @@ export default function EnvironmentCards() {
       case "ETo":
         return "/images/evapotranspiration.png";
       case "TmaxC":
-        return "/images/temperature-max.svg";
+        return "/images/temperature-max.png";
       case "TminC":
-        return "/images/temperature-min.svg";
+        return "/images/temperature-min.png";
       case "Tmean":
         return "/images/temperature-mean.png";
       case "Rs":
         return "/images/radiation-solar.png";
       case "Rns":
-        return "/images/radiation-solar-net.jpg";
+        return "/images/radiation-solar-net.png";
       case "Ra":
         return "/images/extraterrestrial-radiation.png";
       case "Rso":
