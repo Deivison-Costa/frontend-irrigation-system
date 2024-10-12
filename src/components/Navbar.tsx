@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Github, Mail, Menu, Home } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -16,7 +17,16 @@ export default function Navbar() {
   return (
     <nav className="bg-gradient-to-r from-emerald-500 to-teal-500 p-4 shadow-lg">
       <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-white font-bold text-2xl tracking-tight hover:text-emerald-200 transition-colors duration-200">
+        <Link href="/" className="text-white font-bold text-2xl tracking-tight hover:text-emerald-200 transition-colors duration-200 flex items-center group">
+          <div className="relative w-8 h-8 mr-2 overflow-hidden rounded-full">
+            <Image
+              src="/images/sync.png"
+              alt="IrrigaSync Icon"
+              layout="fill"
+              objectFit="cover"
+              className="transition-all duration-300 group-hover:invert"
+            />
+          </div>
           IrrigaSync
         </Link>
         <div className="hidden md:flex items-center space-x-4">
