@@ -1,8 +1,12 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { z } from "zod";
+import { useEffect, useState } from "react"
+import axios from "axios"
+import { z } from "zod"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Skeleton } from "@/components/ui/skeleton"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 const SensorDataSchema = z.object({
   temperature: z.number(),
@@ -25,48 +29,63 @@ const SensorDataSchema = z.object({
   gamma: z.number(),
   es: z.number(),
   ea: z.number(),
-});
+})
 
-type SensorData = z.infer<typeof SensorDataSchema>;
+type SensorData = z.infer<typeof SensorDataSchema>
 
-const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
-const EnvironmentCards: React.FC = () => {
-  const [data, setData] = useState<SensorData | null>(null);
-  const [validationError, setValidationError] = useState<string | null>(null);
+export default function EnvironmentCards() {
+  const [data, setData] = useState<SensorData | null>(null)
+  const [validationError, setValidationError] = useState<string | null>(null)
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/sensors`);
-      
-      const parsedData = SensorDataSchema.safeParse(response.data);
+      const response = await axios.get(`${backendUrl}/sensors`)
+      const parsedData = SensorDataSchema.safeParse(response.data)
       
       if (parsedData.success) {
-        setData(parsedData.data);
-        setValidationError(null);
+        setData(parsedData.data)
+        setValidationError(null)
       } else {
-        console.error("Falha na validação dos dados dos sensores:", parsedData.error);
-        setValidationError("Dados dos sensores inválidos.");
+        console.error("Falha na validação dos dados dos sensores:", parsedData.error)
+        setValidationError("Dados dos sensores inválidos.")
       }
     } catch (error) {
-      console.error("Erro ao buscar dados dos sensores:", error);
-      setValidationError("Erro ao buscar dados dos sensores.");
+      console.error("Erro ao buscar dados dos sensores:", error)
+      setValidationError("Erro ao buscar dados dos sensores.")
     }
-  };
-
-  useEffect(() => {
-    fetchData();
-    const interval = setInterval(fetchData, 5000);
-    return () => clearInterval(interval);
-  }, []);
-
-  if (validationError) {
-    return <div className="text-red-500">{validationError}</div>;
   }
 
-  if (!data) return <div>Carregando...</div>;
+  useEffect(() => {
+    fetchData()
+    const interval = setInterval(fetchData, 5000)
+    return () => clearInterval(interval)
+  }, [])
 
-  const variables = Object.entries(data);
+  if (validationError) {
+    return <div className="text-red-500 p-4 bg-red-100 rounded-md">{validationError}</div>
+  }
+
+  if (!data) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+        {[...Array(6)].map((_, index) => (
+          <Card key={index} className="w-full bg-gradient-to-r from-emerald-500 to-teal-500">
+            <CardHeader>
+              <Skeleton className="h-4 w-[250px] bg-white/20" />
+            </CardHeader>
+            <CardContent>
+              <Skeleton className="h-4 w-[200px] bg-white/20" />
+              <Skeleton className="h-4 w-[150px] mt-2 bg-white/20" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    )
+  }
+
+  const variables = Object.entries(data)
 
   const titlesInPortuguese: { [key: string]: string } = {
     temperature: "Temperatura",
@@ -89,7 +108,7 @@ const EnvironmentCards: React.FC = () => {
     gamma: "Coeficiente Psicrométrico (Gamma)",
     es: "Pressão de Vapor Saturado (es)",
     ea: "Pressão Real de Vapor (ea)",
-  };
+  }
 
   const getClassification = (key: string, value: number) => {
     switch (key) {
@@ -299,35 +318,114 @@ const EnvironmentCards: React.FC = () => {
       default:
         return "/images/default.png";
     }
-  };  
+  };
+  
+  const getStatusColor = (key: string, value: number): string => {
+    switch (key) {
+      case "temperature":
+        if (value < 15) return "bg-blue-500"
+        if (value >= 15 && value <= 25) return "bg-green-500"
+        return "bg-red-500"
+      case "humidity":
+        if (value < 30) return "bg-yellow-500"
+        if (value >= 30 && value <= 60) return "bg-green-500"
+        return "bg-blue-500"
+      case "windSpeed":
+        if (value < 1) return "bg-blue-500"
+        if (value >= 1 && value <= 5) return "bg-green-500"
+        return "bg-red-500"
+      case "pressure":
+        if (value < 90) return "bg-red-500"
+        if (value >= 90 && value <= 105) return "bg-green-500"
+        return "bg-blue-500"
+      case "luminosity":
+        if (value < 300) return "bg-red-500"
+        if (value >= 300 && value <= 800) return "bg-green-500"
+        return "bg-blue-500"
+      case "soilMoisture":
+        if (value < 20) return "bg-red-500"
+        if (value >= 20 && value <= 50) return "bg-green-500"
+        return "bg-blue-500"
+      case "ETo":
+        if (value < 2) return "bg-red-500"
+        if (value >= 2 && value <= 5) return "bg-green-500"
+        return "bg-blue-500"
+      case "TmaxC":
+        if (value < 20) return "bg-blue-500"
+        if (value >= 20 && value <= 30) return "bg-green-500"
+        return "bg-red-500"
+      case "TminC":
+        if (value < 5) return "bg-blue-500"
+        if (value >= 5 && value <= 15) return "bg-green-500"
+        return "bg-red-500"
+      case "Tmean":
+        if (value < 10) return "bg-blue-500"
+        if (value >= 10 && value <= 25) return "bg-green-500"
+        return "bg-red-500"
+      case "Rs":
+        if (value < 10) return "bg-red-500"
+        if (value >= 10 && value <= 20) return "bg-green-500"
+        return "bg-blue-500"
+      case "Rns":
+        if (value < 5) return "bg-red-500"
+        if (value >= 5 && value <= 15) return "bg-green-500"
+        return "bg-blue-500"
+      case "Ra":
+        if (value < 5) return "bg-red-500"
+        if (value >= 5 && value <= 10) return "bg-green-500"
+        return "bg-blue-500"
+      case "Rso":
+        if (value < 5) return "bg-red-500"
+        if (value >= 5 && value <= 10) return "bg-green-500"
+        return "bg-blue-500"
+      case "Rnl":
+        if (value < 2) return "bg-red-500"
+        if (value >= 2 && value <= 5) return "bg-green-500"
+        return "bg-blue-500"
+      case "Rn":
+        if (value < 10) return "bg-red-500"
+        if (value >= 10 && value <= 20) return "bg-green-500"
+        return "bg-blue-500"
+      case "delta":
+        return "bg-gray-500"
+      case "gamma":
+        return "bg-gray-500"
+      case "es":
+        return "bg-gray-500"
+      case "ea":
+        return "bg-gray-500"
+      default:
+        return "bg-gray-500"
+    }
+  }
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
       {variables.map(([key, value]) => (
-        <div
-          key={key}
-          className="relative p-6 text-white rounded-lg shadow-lg"
-          style={{
-            backgroundImage: `url(${getBackgroundImage(key)})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            minWidth: "250px",
-            width: "100%",
-            maxWidth: "400px",
-            height: "auto",
-            aspectRatio: "1 / 1",
-          }}
-        >
-          <div className="absolute inset-0 bg-black opacity-40 rounded-lg"></div>
-          <div className="relative z-10">
-            <h3 className="text-xl font-bold capitalize">{titlesInPortuguese[key] || key}</h3>
-            <p className="text-lg mt-2">Valor: {value}</p>
-            <p className="text-md mt-1">{getClassification(key, value)}</p>
-          </div>
-        </div>
+        <Card key={key} className="w-full overflow-hidden bg-gradient-to-r from-emerald-500 to-teal-500 text-white">
+          <CardHeader className="relative p-0">
+            <div
+              className="absolute inset-0 bg-cover bg-center opacity-30"
+              style={{ backgroundImage: `url(${getBackgroundImage(key)})` }}
+            />
+            <div className="relative p-6">
+              <CardTitle className="text-xl font-bold">{titlesInPortuguese[key] || key}</CardTitle>
+              <CardDescription className="text-white/80">
+              </CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent className="pt-4">
+            <Badge className={`${getStatusColor(key, value)} text-white`}>
+              {value.toFixed(2)}
+            </Badge>
+            <ScrollArea className="h-[100px] mt-2">
+              <p className="text-sm text-white/90">
+                {getClassification(key, value)}
+              </p>
+            </ScrollArea>
+          </CardContent>
+        </Card>
       ))}
     </div>
-  );
-};
-
-export default EnvironmentCards;
+  )
+}

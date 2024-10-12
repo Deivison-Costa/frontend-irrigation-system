@@ -1,36 +1,38 @@
-import './styles/globals.css';
-import type { ReactNode } from 'react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './styles/globals.css'
+import { ThemeProvider } from "@/components/theme-provider"
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 
-export const metadata = {
-  title: 'Sistema de Irrigação',
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: 'IrrigaSync',
   description: 'Monitoramento de irrigação em tempo real',
-};
-
-interface RootLayoutProps {
-  children: ReactNode;
 }
 
-const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="pt-BR">
-      <head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{metadata.title}</title>
-        <meta name="description" content={metadata.description} />
-        <link rel="icon" href="/favicon.ico" />
-      </head>
-      <body className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-grow container mx-auto p-4">
-          {children}
-        </main>
-        <Footer />
+    <html lang="pt-BR" suppressHydrationWarning>
+      <body className={`${inter.className} flex flex-col min-h-screen bg-background text-foreground`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar />
+          <main className="flex-grow container mx-auto px-4 py-8">
+            {children}
+          </main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
-  );
-};
-
-export default RootLayout;
+  )
+}
