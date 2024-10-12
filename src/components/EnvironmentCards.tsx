@@ -411,6 +411,8 @@ export default function EnvironmentCards() {
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'right',
+                padding: '10px',
+                inset: '10px',
               }}
             />
             <div className="relative p-6">
