@@ -405,7 +405,7 @@ export default function EnvironmentCards() {
         <Card key={key} className="w-full overflow-hidden bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-0">
           <CardHeader className="relative p-0">
             <div
-              className="absolute inset-0 bg-cover bg-center opacity-30"
+              className="absolute inset-0 bg-cover bg-center opacity-50"
               style={{
                 backgroundImage: `url(${getBackgroundImage(key)})`,
                 backgroundSize: 'contain',
